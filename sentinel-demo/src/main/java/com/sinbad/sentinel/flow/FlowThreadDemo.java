@@ -31,7 +31,7 @@ public class FlowThreadDemo {
 	private static final int threadCount = 100;
 
 	private static int seconds = 60 + 40;
-	private static volatile int methodBRunningTime = 2000;
+	private static volatile int methodBRunningTime = 1000;
 
 	public static void main(String[] args) throws Exception {
 		System.out.println(

@@ -53,8 +53,12 @@ management:
         enabled: true
 sentinel:
   zookeeper:
-    remoteAddress: mycompany.zk.cn:2181
+    remoteAddress: company.zk.address
     configPath: /config/sentinel/
     projectName: ${spring.application.name}
 
+logging:
+  config: classpath:logconfig/logback.xml
+  level:
+    root: info
 

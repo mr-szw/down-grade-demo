@@ -39,7 +39,6 @@ public class FlowThreadSimpleDemo {
 			 *
 			 *
 			 */
-
 			ContextUtil.enter("context-Name", "context-Origin");
 			//ContextUtil.enter("context-Name");
 			Entry methodA = null;
@@ -56,6 +55,8 @@ public class FlowThreadSimpleDemo {
 			}
 			try {
 				methodA = SphU.entry("methodA");
+				AtomicInteger atomicInteger = new AtomicInteger();
+				atomicInteger.addAndGet(1);
 			} catch (BlockException e) {
 				e.printStackTrace();
 			}
@@ -67,8 +68,8 @@ public class FlowThreadSimpleDemo {
 		FlowRule rule1 = new FlowRule();
 		rule1.setResource("methodA");
 		// set limit concurrent thread for 'methodA' to 20
-		rule1.setCount(1);
 		rule1.setGrade(RuleConstant.FLOW_GRADE_THREAD);
+		rule1.setCount(1);
 		rule1.setLimitApp("default");
 
 		rules.add(rule1);
