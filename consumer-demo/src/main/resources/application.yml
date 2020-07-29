@@ -20,7 +20,8 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: hystrix.stream
+        #include: "*" # '*' 代表开放所有端点
       base-path: /server/manage
   endpoint:
     env:
@@ -53,8 +54,16 @@ management:
         enabled: true
 sentinel:
   zookeeper:
+<<<<<<< HEAD
     remoteAddress: company.zk
+=======
+    remoteAddress: company.zk.service
+>>>>>>> 3126b599d3062b6c1e101fdc7e281f50d4fd394f
     configPath: /config/sentinel/
     projectName: ${spring.application.name}
 
+logging:
+  config: classpath:logconfig/logback.xml
+  level:
+    root: info
 

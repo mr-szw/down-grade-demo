@@ -156,7 +156,7 @@
 				<version>${spring.boot.version}</version>
 				<configuration>
 					<fork>true</fork>
-					<mainClass>com.alibaba.csp.sentinel.dashboard.DashboardApplication</mainClass>
+					<mainClass>com.sinbad.demo.hystrix.dashboard.DashboardApplication</mainClass>
 				</configuration>
 				<executions>
 					<execution>
