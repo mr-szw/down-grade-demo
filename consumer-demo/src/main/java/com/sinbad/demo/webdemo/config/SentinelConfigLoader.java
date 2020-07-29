@@ -17,15 +17,16 @@ import com.alibaba.csp.sentinel.slots.block.degrade.DegradeRule;
 import com.alibaba.csp.sentinel.slots.block.degrade.DegradeRuleManager;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.google.gson.reflect.TypeToken;
 import com.sinbad.demo.enums.RuleTypePathEnum;
 import com.sinbad.demo.utils.GsonUtil;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @author sinbad on 2020/07/07.
  */
+@Slf4j
 @Component
 public class SentinelConfigLoader {
 
@@ -54,8 +55,9 @@ public class SentinelConfigLoader {
 		//流控规则数据源
 		ReadableDataSource<String, List<FlowRule>> flowRuleDataSource =
 				new ZookeeperDataSource<>(remoteAddress, CONFIG_ROOT + configPath + RuleTypePathEnum.FLOW.getTypePath() + "/" + projectName,
-						source -> GsonUtil.fromJson(source, new TypeReference<List<FlowRule>>() {
+						source -> GsonUtil.fromJson(source, new TypeToken<List<FlowRule>>() {
 						}.getType()));
+		log.info("register2Property  flowRuleDataSource={}", GsonUtil.toJson(flowRuleDataSource.getProperty()));
 		FlowRuleManager.register2Property(flowRuleDataSource.getProperty());
 
 
@@ -64,6 +66,7 @@ public class SentinelConfigLoader {
 				new ZookeeperDataSource<>(remoteAddress, CONFIG_ROOT + configPath + RuleTypePathEnum.DEGRADE.getTypePath() + "/" + projectName,
 						source -> GsonUtil.fromJson(source, new TypeToken<List<DegradeRule>>() {
 						}.getType()));
+		log.info("register2Property  degradeRuleDataSource={}", degradeRuleDataSource);
 		DegradeRuleManager.register2Property(degradeRuleDataSource.getProperty());
 	}
 

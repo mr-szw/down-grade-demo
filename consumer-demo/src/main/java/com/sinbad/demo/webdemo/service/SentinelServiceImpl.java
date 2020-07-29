@@ -9,13 +9,13 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
 public class SentinelServiceImpl {
-
 
 
 	@SentinelResource(value = "SentinelServiceImpl.default")
@@ -30,8 +30,7 @@ public class SentinelServiceImpl {
 	}
 
 
-
-	@SentinelResource(value = "SentinelServiceImpl.sentinelTimeOut", fallback = "")
+	@SentinelResource(value = "SentinelServiceImpl.sentinelTimeOut", fallback = "sentinelTimeOutFallBack", blockHandler = "sentinelErrorBlockHandler")
 	public String sentinelTimeOut() {
 		log.info("Do try, uuid={} date={}", UUID.randomUUID(), new Date().toString());
 		try {
@@ -43,10 +42,20 @@ public class SentinelServiceImpl {
 
 	}
 
+	public String sentinelTimeOutFallBack(Throwable throwable) {
+		throwable.printStackTrace();
+		return "Time out";
+	}
 
-	@SentinelResource(value = "SentinelServiceImpl.sentinelError")
+	public String sentinelErrorBlockHandler(BlockException ex) {
+		System.out.println("Error Block  out");
+		ex.printStackTrace();
+		return "Error Block  out";
+	}
+
+
+	@SentinelResource(value = "SentinelServiceImpl.sentinelError", fallback = "sentinelTimeOutFallBack", blockHandler = "sentinelErrorBlockHandler")
 	public String sentinelError() {
-
 		try {
 			return String.valueOf(1 / RandomUtils.nextInt(2));
 		} catch (Exception e) {
